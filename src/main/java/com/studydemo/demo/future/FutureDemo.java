@@ -3,15 +3,17 @@ package com.studydemo.demo.future;
 import com.google.common.util.concurrent.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author 孙浩林
  * @date: 7/1/23 16:34
  */
 public class FutureDemo {
-
+/*
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         ListeningExecutorService guavaExecutor = MoreExecutors.listeningDecorator(executor);
@@ -48,6 +50,20 @@ public class FutureDemo {
             @Override
             public void onFailure(Throwable t) {
             }}, guavaExecutor);
+    }*/
+
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        Future<Integer> submit = executorService.submit(() -> {
+            Thread.sleep(2000);
+            return 2 + 2;
+        });
+
+        System.out.println("异步计算中");
+        Integer res = submit.get();
+        System.out.println("结果为"+5);
+        executorService.shutdown();
     }
+
 
 }
