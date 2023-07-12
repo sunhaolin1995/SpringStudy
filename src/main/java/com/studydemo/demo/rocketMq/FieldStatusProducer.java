@@ -2,8 +2,11 @@ package com.studydemo.demo.rocketMq;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.common.RemotingHelper;
 
 public class FieldStatusProducer {
     private static final String TOPIC = "field_status_topic";
@@ -19,8 +22,8 @@ public class FieldStatusProducer {
             producer.start();
 
             // 模拟字段状态变化，发布消息到RocketMQ
-            String tableName = "your_table";
-            String fieldName = "your_field";
+            String tableName = "hhhhhhhhhhhhhhhhhhh";
+            String fieldName = "dsadfasfasfasfascascascascsa";
             int oldValue = 0;
             int newValue = 1;
 
