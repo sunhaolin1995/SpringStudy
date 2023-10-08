@@ -1,6 +1,7 @@
 package com.studydemo.demo.blockingQueue;
 
 import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -11,23 +12,55 @@ public class BlockingQueueUseWaitNotify {
 
 
     public static void main(String[] args) {
-        MyQueue myQueue = new MyQueue();
+        final int capacity = 5;
+        final Queue<Integer> buffer = new LinkedList<>();
+        final Object lock = new Object();
 
         Thread producerThread = new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                myQueue.add(i);
-                System.out.println("添加了" + i);
+                synchronized (lock) {
+                    while (buffer.size() == capacity) {
+                        try {
+                            lock.wait(); // 队列已满，生产者等待
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                    buffer.offer(i);
+                    System.out.println("生产了: " + i);
+                    lock.notifyAll(); // 通知等待的消费者
+                }
             }
         });
 
         Thread consumerThread = new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                int res = myQueue.get();
-                System.out.println(" 消费了" + res);
+            while (true) {
+                synchronized (lock) {
+                    while (buffer.isEmpty()) {
+                        try {
+                            lock.wait(); // 队列为空，消费者等待
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                    int item = buffer.poll();
+                    System.out.println("消费了: " + item);
+                    lock.notifyAll(); // 通知等待的生产者
+                }
             }
         });
+
         producerThread.start();
         consumerThread.start();
+
+        try {
+            producerThread.join();
+            consumerThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
 }
