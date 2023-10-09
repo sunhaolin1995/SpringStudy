@@ -12,7 +12,7 @@ public class Producer implements Runnable{
     public void run() {
         while (true){
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
                 storage.produce();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

@@ -12,7 +12,7 @@ public class test {
         synchronized (lock) {
             try {
                 System.out.println("等着被唤醒");
-                lock.wait(5000); // 在5秒内等待被唤醒
+                lock.wait(); // 在5秒内等待被唤醒
                 System.out.println("被唤醒了");
             } catch (InterruptedException e) {
                 e.printStackTrace();
