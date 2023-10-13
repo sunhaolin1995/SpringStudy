@@ -7,16 +7,11 @@ package com.studydemo.demo;
 public class test {
 
     public static void main(String[] args) {
-        Object lock = new Object();
+        String str1 = new String("Hello");
+        String str2 = new String("Hello");
 
-        synchronized (lock) {
-            try {
-                System.out.println("等着被唤醒");
-                lock.wait(); // 在5秒内等待被唤醒
-                System.out.println("被唤醒了");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        System.out.println(str1.equals(str2)); // 输出 true，因为内容相同
+        System.out.println(str1.hashCode()); // 哈希码不同
+        System.out.println(str2.hashCode()); // 哈希码不同
     }
 }
